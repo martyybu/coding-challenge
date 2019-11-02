@@ -41,7 +41,7 @@ namespace SurveyShips
 
             // Checking if ship is lost and printing it's location
             if (ship.IsShipLost) {
-            Console.WriteLine(ship.Coordinates.CoordinateX + " " + ship.Coordinates.CoordinateY + " " + ship.CardinalDirection + "LOST");
+            Console.WriteLine(ship.Coordinates.CoordinateX + " " + ship.Coordinates.CoordinateY + " " + ship.CardinalDirection + " LOST");
             } else Console.WriteLine(ship.Coordinates.CoordinateX + " " + ship.Coordinates.CoordinateY + " " + ship.CardinalDirection);
 
             Console.ReadLine();
@@ -66,7 +66,7 @@ namespace SurveyShips
             return map;
         }
 
-        // Computes the location of the ship
+        // Computes the location and cardinal direction of the ship
         private static void ComputeCommand(Ship ship, Map map, char Command) 
         {
             switch (Command)
@@ -166,11 +166,11 @@ namespace SurveyShips
         public int Height { get; set; }
         public int MapSize { get; set; }
 
-        public Map(List<Coordinates> CoordList, int width, int height, int mapSize) 
+        public Map(List<Coordinates> CoordList, int height, int width, int mapSize) 
         {
             ListOfCoordinates = CoordList;
-            Width = width;
             Height = height;
+            Width = width;
             MapSize = mapSize;
         }
     }

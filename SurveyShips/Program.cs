@@ -14,6 +14,7 @@ namespace SurveyShips
             List<Ship> ListOfShips = new List<Ship>();
             List<LostShip> LostShips = new List<LostShip>();
             List<string> ListOfCommands = new List<string>();
+
             /*
             Console.WriteLine("Please insert map size consisting of two integers. E.g.: 5 5");
             string ReadMapValues = Console.ReadLine();
@@ -21,6 +22,7 @@ namespace SurveyShips
             int Height = int.Parse(mapSizeValues[0]);
             int Width = int.Parse(mapSizeValues[1]);
             */
+
             Console.WriteLine("Please specify the path of the sample input:");
             // Reads the file
             var path = Console.ReadLine();
@@ -120,7 +122,6 @@ namespace SurveyShips
         private static Map Create2DMap(int Height, int Width)
         {
             List<Coordinates> CoordinatesList = new List<Coordinates>();
-            //Adding the map to 2D array
             for (var Col = 0; Col < Height; Col++)
             {
                 for (var Row = 0; Row < Width; Row++)
@@ -131,10 +132,12 @@ namespace SurveyShips
                 }
             }
 
+            // Returns a created map from provided width and height of the map
             Map map = new Map(CoordinatesList, Width, Height, Height*Width);
             return map;
         }
 
+        // Checks if there is a lost ship at those coordinates already(does not allow another ship to fall off the map there)
         private static bool FoundLostShip(List<LostShip> lostShips, Ship ship) 
         {
             bool foundLostShip = false;
@@ -147,6 +150,7 @@ namespace SurveyShips
             }
             return foundLostShip;
         }
+
         // Computes the location and cardinal direction of the ship
         private static void ComputeCommand(Ship ship, Map map, char Command, List<LostShip> ListOfLostShips) 
         {
@@ -250,6 +254,7 @@ namespace SurveyShips
         }
     }
 
+    // Lost ship object, used to "block" path for another ship that wants to pass that location
     public class LostShip
     {
         public Ship Ship { get; set; }
@@ -262,6 +267,7 @@ namespace SurveyShips
         }
     }
 
+    // Ship object
     public class Ship
     {
         public Coordinates Coordinates { get; set; }

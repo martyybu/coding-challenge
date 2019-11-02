@@ -10,7 +10,7 @@ namespace SurveyShips
     {
         static void Main(string[] args)
         {
-
+            List<LostShip> LostShips = new List<LostShip>();
             Console.WriteLine("Please insert map size consisting of two integers. E.g.: 5 5");
             string ReadMapValues = Console.ReadLine();
             string[] mapSizeValues = ReadMapValues.Split(' ');
@@ -36,7 +36,7 @@ namespace SurveyShips
             char[] Commands = ReadCommands.ToCharArray();
             for(int i = 0; i < Commands.Count(); i++) 
             {
-                ComputeCommand(ship, map, Commands[i]);
+                ComputeCommand(ship, map, Commands[i], LostShips);
             }
 
             // Checking if ship is lost and printing it's location
@@ -66,8 +66,20 @@ namespace SurveyShips
             return map;
         }
 
+        private static bool FoundLostShip(List<LostShip> lostShips, Ship ship) 
+        {
+            bool foundLostShip = false;
+            for (int i = 0; i < lostShips.Count(); i++) 
+            {
+                if (lostShips[i].LostCoordinates == ship.Coordinates) 
+                {
+                    foundLostShip = true;
+                }
+            }
+            return foundLostShip;
+        }
         // Computes the location and cardinal direction of the ship
-        private static void ComputeCommand(Ship ship, Map map, char Command) 
+        private static void ComputeCommand(Ship ship, Map map, char Command, List<LostShip> ListOfLostShips) 
         {
             switch (Command)
             {
@@ -75,33 +87,57 @@ namespace SurveyShips
                 if (ship.CardinalDirection == "E") 
                 {
                     ship.Coordinates.CoordinateX += 1;
-                    if (ship.Coordinates.CoordinateX > map.Width-1) 
+                    if (ship.Coordinates.CoordinateX > map.Width-1 && FoundLostShip(ListOfLostShips, ship) == false) 
                     {
                         ship.IsShipLost = true;
+                        LostShip lostShip = new LostShip(ship, ship.Coordinates);
+                        ListOfLostShips.Add(lostShip);
+                    }
+                    else if (ship.Coordinates.CoordinateX > map.Width-1 && FoundLostShip(ListOfLostShips, ship) == true) 
+                    {
+                        ship.Coordinates.CoordinateX -= 1;
                     }
                 }
                 else if (ship.CardinalDirection == "S") 
                 {
                     ship.Coordinates.CoordinateY -= 1;
-                    if (ship.Coordinates.CoordinateY > map.Height-1) 
+                    if (ship.Coordinates.CoordinateY > map.Height-1 && FoundLostShip(ListOfLostShips, ship) == false) 
                     {
                         ship.IsShipLost = true;
+                        LostShip lostShip = new LostShip(ship, ship.Coordinates);
+                        ListOfLostShips.Add(lostShip);
+                    }
+                    else if (ship.Coordinates.CoordinateY > map.Height-1 && FoundLostShip(ListOfLostShips, ship) == true) 
+                    {
+                        ship.Coordinates.CoordinateY += 1;
                     }
                 }
                 else if (ship.CardinalDirection == "W") 
                 {
                     ship.Coordinates.CoordinateX -= 1;
-                    if (ship.Coordinates.CoordinateX < 0) 
+                    if (ship.Coordinates.CoordinateX < 0 && FoundLostShip(ListOfLostShips, ship) == false) 
                     {
                         ship.IsShipLost = true;
+                        LostShip lostShip = new LostShip(ship, ship.Coordinates);
+                        ListOfLostShips.Add(lostShip);
+                    }
+                    else if (ship.Coordinates.CoordinateX < 0 && FoundLostShip(ListOfLostShips, ship) == true)
+                    {
+                        ship.Coordinates.CoordinateX += 1;
                     }
                 }
                 else if (ship.CardinalDirection == "N") 
                 {
                     ship.Coordinates.CoordinateY += 1;
-                    if (ship.Coordinates.CoordinateY < 0) 
+                    if (ship.Coordinates.CoordinateY < 0 && FoundLostShip(ListOfLostShips, ship) == false) 
                     {
                         ship.IsShipLost = true;
+                        LostShip lostShip = new LostShip(ship, ship.Coordinates);
+                        ListOfLostShips.Add(lostShip);                        
+                    }
+                    else if (ship.Coordinates.CoordinateY < 0 && FoundLostShip(ListOfLostShips, ship) == true) 
+                    {
+                        ship.Coordinates.CoordinateY -= 1;
                     }
                 }
                 break;
@@ -142,6 +178,18 @@ namespace SurveyShips
                 }
                 break;
             }
+        }
+    }
+
+    public class LostShip
+    {
+        public Ship Ship { get; set; }
+        public Coordinates LostCoordinates { get; set; }
+
+        public LostShip(Ship ship, Coordinates LostCoord) 
+        {
+            Ship = ship;
+            LostCoordinates = LostCoord;
         }
     }
 

@@ -10,39 +10,108 @@ namespace SurveyShips
     {
         static void Main(string[] args)
         {
+            // List of ships
+            List<Ship> ListOfShips = new List<Ship>();
             List<LostShip> LostShips = new List<LostShip>();
+            List<string> ListOfCommands = new List<string>();
+            /*
             Console.WriteLine("Please insert map size consisting of two integers. E.g.: 5 5");
             string ReadMapValues = Console.ReadLine();
             string[] mapSizeValues = ReadMapValues.Split(' ');
             int Height = int.Parse(mapSizeValues[0]);
             int Width = int.Parse(mapSizeValues[1]);
+            */
+            Console.WriteLine("Please specify the path of the sample input:");
+            // Reads the file
+            var path = Console.ReadLine();
+            var txtFile = System.IO.File.ReadAllText(path);
+
+            // Split the txt file into lines
+            var lines = txtFile.Split(new[] { '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Loop all lines
+            int Width = 0, Height = 0;
+            int intNr = 0; // used to loop through lines
+            int ShipsLoop = 0; // used to continue looping through all ships
+            string CD = "";
+            int CoordinateX = 0, CoordinateY = 0;
+            foreach (var line in lines)
+            {
+                // Split line by space and loop through all the numeric values
+                foreach (var s in line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    // Map info
+                    if (intNr == 0)
+                    {
+                        Height = int.Parse(s);
+                        intNr++;
+                    }
+                    else if (intNr == 1)
+                    {
+                        Width = int.Parse(s);
+                        intNr++;
+                    }
+
+                    // Ship info
+                    else if (intNr == 2 + ShipsLoop)
+                    {
+                        CoordinateX = int.Parse(s);
+                        intNr++;
+                    }
+                    else if (intNr == 3 + ShipsLoop)
+                    {
+                        CoordinateY = int.Parse(s);
+                        intNr++;
+                    }
+                    else if (intNr == 4 + ShipsLoop)
+                    {
+                        CD = s;
+                        intNr++;
+                    }
+                    else if (intNr == 5 + ShipsLoop)
+                    {
+                        ListOfCommands.Add(s);
+                        Coordinates Coordinate = new Coordinates(CoordinateX, CoordinateY);
+                        Ship ship = new Ship(Coordinate, CD, false);
+                        ListOfShips.Add(ship);
+                        intNr++;
+                        ShipsLoop += 4;
+                    }
+                }
+            }
 
             // Creating a 2D map provided
             Map map = Create2DMap(Height, Width);
 
+            /*
             Console.WriteLine("Please insert ship's coordinates. E.g.: 1 1 E");
             string ReadCoordinateValues = Console.ReadLine();
             string[] coordinatesValues = ReadCoordinateValues.Split(' ');
             Coordinates Coordinate = new Coordinates(int.Parse(coordinatesValues[0]), int.Parse(coordinatesValues[1]));
             string CD = coordinatesValues[2];
+            */
 
             // Creating a ship
-            Ship ship = new Ship(Coordinate, CD, false);
+            //Ship ship = new Ship(Coordinate, CD, false);
 
             
+            /*
             // Reading commands and computing ship's location after input
             Console.WriteLine("Please insert a sequence of commands for the ship(R-right, L-left, F-forward). E.g. RFRFRFRF");
             string ReadCommands = Console.ReadLine();
             char[] Commands = ReadCommands.ToCharArray();
-            for(int i = 0; i < Commands.Count(); i++) 
-            {
-                ComputeCommand(ship, map, Commands[i], LostShips);
+            */
+            for(int i = 0; i < ListOfShips.Count(); i++) {
+                char[] Commands = ListOfCommands[i].ToCharArray();
+                for(int j = 0; j < Commands.Count(); j++) 
+                {
+                    ComputeCommand(ListOfShips[i], map, Commands[j], LostShips);
+                }
+                if (ListOfShips[i].IsShipLost) {
+                    Console.WriteLine(ListOfShips[i].Coordinates.CoordinateX + " " + ListOfShips[i].Coordinates.CoordinateY + " " + ListOfShips[i].CardinalDirection + " LOST");
+                } 
+                else Console.WriteLine(ListOfShips[i].Coordinates.CoordinateX + " " + ListOfShips[i].Coordinates.CoordinateY + " " + ListOfShips[i].CardinalDirection);
             }
-
-            // Checking if ship is lost and printing it's location
-            if (ship.IsShipLost) {
-            Console.WriteLine(ship.Coordinates.CoordinateX + " " + ship.Coordinates.CoordinateY + " " + ship.CardinalDirection + " LOST");
-            } else Console.WriteLine(ship.Coordinates.CoordinateX + " " + ship.Coordinates.CoordinateY + " " + ship.CardinalDirection);
 
             Console.ReadLine();
         }
@@ -58,7 +127,7 @@ namespace SurveyShips
                 {
                     Coordinates Coordinate = new Coordinates(Row, Col);
                     CoordinatesList.Add(Coordinate);
-                    Console.WriteLine("Added coordinates. X: " + Coordinate.CoordinateX + ", Y: " + Coordinate.CoordinateY);
+                    //Console.WriteLine("Added coordinates. X: " + Coordinate.CoordinateX + ", Y: " + Coordinate.CoordinateY);
                 }
             }
 

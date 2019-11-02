@@ -28,18 +28,16 @@ namespace SurveyShips
 
             Ship ship = new Ship(Coordinate, CD);
 
-            /*
+            
             Console.WriteLine("Please insert a sequence of commands for the ship(R-right, L-left, F-forward). E.g. RFRFRFRF");
             string ReadCommands = Console.ReadLine();
             char[] Commands = ReadCommands.ToCharArray();
             for(int i = 0; i < Commands.Count(); i++) 
             {
-                Console.WriteLine(Commands[i]);
+                ComputeCommand(ship, Commands[i]);
             }
-            */
 
-
-
+            Console.WriteLine(ship.Coordinates.CoordinateX + " " + ship.Coordinates.CoordinateY + " " + ship.CardinalDirection);
             Console.ReadLine();
         }
 
@@ -59,6 +57,67 @@ namespace SurveyShips
             }
 
             Map map = new Map(CoordinatesList, Height*Width);
+        }
+
+        private static void ComputeCommand(Ship ship, char Command) 
+        {
+            switch (Command)
+            {
+            case 'F':
+                if (ship.CardinalDirection == "E") 
+                {
+                    ship.Coordinates.CoordinateX += 1;
+                }
+                if (ship.CardinalDirection == "S") 
+                {
+                    ship.Coordinates.CoordinateY += 1;
+                }
+                if (ship.CardinalDirection == "W") 
+                {
+                    ship.Coordinates.CoordinateX -= 1;
+                }
+                if (ship.CardinalDirection == "N") 
+                {
+                    ship.Coordinates.CoordinateY -= 1;
+                }
+                break;
+            case 'R':
+                if (ship.CardinalDirection == "E")
+                {
+                    ship.CardinalDirection = "S";
+                }
+                if (ship.CardinalDirection == "S")
+                {
+                    ship.CardinalDirection = "W";
+                }
+                if (ship.CardinalDirection == "W")
+                {
+                    ship.CardinalDirection = "N";
+                }
+                if (ship.CardinalDirection == "N")
+                {
+                    ship.CardinalDirection = "E";
+                }
+                break;
+            case 'L':
+                if (ship.CardinalDirection == "E")
+                {
+                    ship.CardinalDirection = "N";
+                }
+                if (ship.CardinalDirection == "N")
+                {
+                    ship.CardinalDirection = "W";
+                }
+                if (ship.CardinalDirection == "W")
+                {
+                    ship.CardinalDirection = "S";
+                }
+                if (ship.CardinalDirection == "S")
+                {
+                    ship.CardinalDirection = "E";
+                }
+                break;
+            }
         }
     }
 

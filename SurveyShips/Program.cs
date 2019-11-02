@@ -68,15 +68,15 @@ namespace SurveyShips
                 {
                     ship.Coordinates.CoordinateX += 1;
                 }
-                if (ship.CardinalDirection == "S") 
+                else if (ship.CardinalDirection == "S") 
                 {
                     ship.Coordinates.CoordinateY += 1;
                 }
-                if (ship.CardinalDirection == "W") 
+                else if (ship.CardinalDirection == "W") 
                 {
                     ship.Coordinates.CoordinateX -= 1;
                 }
-                if (ship.CardinalDirection == "N") 
+                else if (ship.CardinalDirection == "N") 
                 {
                     ship.Coordinates.CoordinateY -= 1;
                 }
@@ -86,15 +86,15 @@ namespace SurveyShips
                 {
                     ship.CardinalDirection = "S";
                 }
-                if (ship.CardinalDirection == "S")
+                else if (ship.CardinalDirection == "S")
                 {
                     ship.CardinalDirection = "W";
                 }
-                if (ship.CardinalDirection == "W")
+                else if (ship.CardinalDirection == "W")
                 {
                     ship.CardinalDirection = "N";
                 }
-                if (ship.CardinalDirection == "N")
+                else if (ship.CardinalDirection == "N")
                 {
                     ship.CardinalDirection = "E";
                 }
@@ -104,15 +104,15 @@ namespace SurveyShips
                 {
                     ship.CardinalDirection = "N";
                 }
-                if (ship.CardinalDirection == "N")
+                else if (ship.CardinalDirection == "N")
                 {
                     ship.CardinalDirection = "W";
                 }
-                if (ship.CardinalDirection == "W")
+                else if (ship.CardinalDirection == "W")
                 {
                     ship.CardinalDirection = "S";
                 }
-                if (ship.CardinalDirection == "S")
+                else if (ship.CardinalDirection == "S")
                 {
                     ship.CardinalDirection = "E";
                 }
